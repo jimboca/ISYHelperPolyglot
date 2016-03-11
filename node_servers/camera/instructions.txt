@@ -1,0 +1,7 @@
+TODO: Update this for foscam
+
+1. Install node server on the ISY controller.
+2. Set the IP address for the Hue Bridge using the ISY GUI.
+3. Press the connect button on the Hue Bridge.
+4. Press the connect button in the ISY GUI.
+5. Hue lights will be automatically added to the ISY.

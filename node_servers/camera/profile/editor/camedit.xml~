@@ -1,0 +1,7 @@
+<editors>
+
+   <editor id="I_INTEGER">
+       <range uom="25" min="0" max="1000" prec="0" />
+   </editor>
+
+</editors>

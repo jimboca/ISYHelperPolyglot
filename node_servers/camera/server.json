@@ -1,0 +1,18 @@
+{
+    "name": "ISYHelper Camera",
+    "docs": "https://www.google.com",
+    "type": "python",
+    "executable": "camera.py",
+    "description": "Connect a camera to the ISY994.  This should be any camera that uses this interface http://www.foscam.es/descarga/ipcam_cgi_sdk.pdf which includes some Smarthome INSTEON cameras that are rebranded Foscam's",
+    "notice": "\"Foscam\" is a trademark owned by ?. This Node Server is neither developed by nor endorsed by the Foscam.",
+    "credits": [
+        {
+            "title": "Libary: Library Name",
+            "author": "Author",
+            "version": "0.0",
+            "date": "May 18, 2015",
+            "source": "https://github.com/",
+            "license": "no license"
+        }
+    ]
+}

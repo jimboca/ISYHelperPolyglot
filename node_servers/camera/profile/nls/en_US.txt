@@ -1,0 +1,22 @@
+
+ND-CAMSERVER-NAME = ISYHelper Camera Server
+ND-SERVER-ICON = Input
+ST-SERVER-GV1-NAME = Version
+
+# Generic Camera Name
+ND-GCAM-NAME = Generic IP Camera
+ND-FCAM1-NAME = Foscam CGI Camera
+ND-FCAM1-ICON = Input
+
+ST-CAM-GV1-NAME = Alarm Motion Armed
+ST-CAM-GV2-NAME = Alarm Send Mail
+ST-CAM-GV3-NAME = Alarm Motion Sensitivity
+ST-CAM-GV4-NAME = Alarm Motion Compensation
+
+CMD-ST-NAME = Query
+CMD-CAM-SET_ALMOA-NAME = Set Alarm Motion Armed
+CMD-CAM-SET_ALML-NAME = Set Alarm Send Mail
+CMD-CAM-SET_ALMOS-NAME = Set Alarm Motion Sensitivity
+CMD-CAM-SET_ALMOC-NAME = Set Alarm Motion Compensation
+
+

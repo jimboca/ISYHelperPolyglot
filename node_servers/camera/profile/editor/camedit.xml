@@ -1,0 +1,11 @@
+<editors>
+
+   <editor id="I_INTEGER">
+       <range uom="25" min="0" max="1000" prec="0" />
+   </editor>
+
+   <editor id="BOOL">
+       <range uom="2" subset="0,1" />
+   </editor>
+
+</editors>

@@ -1,0 +1,61 @@
+<nodeDefs>
+
+  <!-- === Foscam CGI Camera ============================================================  -->
+  <nodeDef id="CAMSERVER" nodeType="139" nls="CAMS">
+    <sts>
+      <st id="GV1" editor="I_INTEGER" />
+    </sts>
+    <cmds>
+      <sends />
+      <accepts>
+	<cmd id="QUERY" />
+      </accepts>
+    </cmds>
+  </nodeDef>
+
+  <!-- === Foscam CGI Camera ============================================================  -->
+  <nodeDef id="FCAM1" nodeType="139" nls="CAM">
+    <sts>
+      <st id="GV1" editor="BOOL" />
+      <st id="GV2" editor="BOOL" />
+      <st id="GV3" editor="BOOL" />
+      <st id="GV4" editor="BOOL" />
+    </sts>
+    <cmds>
+      <sends />
+      <accepts>
+        <cmd id="SET_ALMOA">
+          <p id="GV1" editor="BOOL" init="GV1" />
+        </cmd>
+        <cmd id="SET_ALML">
+          <p id="GV2" editor="BOOL" init="GV2" />
+        </cmd>
+        <cmd id="SET_ALMOS">
+          <p id="GV3" editor="BOOL" init="GV3" />
+        </cmd>
+        <cmd id="SET_ALMOC">
+          <p id="GV4" editor="BOOL" init="GV4" />
+        </cmd>
+	<cmd id="QUERY" />
+      </accepts>
+    </cmds>
+  </nodeDef>
+
+  <!-- === Foscam CGI Camera ============================================================  -->
+  <nodeDef id="FCAM2" nodeType="139" nls="CAM">
+    <sts>
+      <st id="GV1" editor="I_INTEGER" />
+      <st id="GV2" editor="I_INTEGER" />
+      <st id="GV3" editor="I_INTEGER" />
+      <st id="GV4" editor="I_INTEGER" />
+    </sts>
+    <cmds>
+      <sends />
+      <accepts>
+	<cmd id="QUERY" />
+      </accepts>
+    </cmds>
+  </nodeDef>
+
+
+</nodeDefs>

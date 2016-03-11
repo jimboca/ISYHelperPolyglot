@@ -1,0 +1,49 @@
+<nodeDefs>
+
+  <!-- === Foscam CGI Camera ============================================================  -->
+  <nodeDef id="CAMSERVER" nodeType="139" nls="CAMS">
+    <sts>
+      <st id="GV1" editor="I_INTEGER" />
+    </sts>
+    <cmds>
+      <sends />
+      <accepts>
+	<cmd id="QUERY" />
+      </accepts>
+    </cmds>
+  </nodeDef>
+
+  <!-- === Foscam CGI Camera ============================================================  -->
+  <nodeDef id="FCAM1" nodeType="139" nls="CAM">
+    <sts>
+      <st id="GV1" editor="I_INTEGER" />
+      <st id="GV2" editor="I_INTEGER" />
+      <st id="GV3" editor="I_INTEGER" />
+      <st id="GV4" editor="I_INTEGER" />
+    </sts>
+    <cmds>
+      <sends />
+      <accepts>
+	<cmd id="QUERY" />
+      </accepts>
+    </cmds>
+  </nodeDef>
+
+  <!-- === Foscam CGI Camera ============================================================  -->
+  <nodeDef id="FCAM2" nodeType="139" nls="CAM">
+    <sts>
+      <st id="GV1" editor="I_INTEGER" />
+      <st id="GV2" editor="I_INTEGER" />
+      <st id="GV3" editor="I_INTEGER" />
+      <st id="GV4" editor="I_INTEGER" />
+    </sts>
+    <cmds>
+      <sends />
+      <accepts>
+	<cmd id="QUERY" />
+      </accepts>
+    </cmds>
+  </nodeDef>
+
+
+</nodeDefs>

@@ -1,0 +1,16 @@
+
+ND-CAMSERVER-NAME = ISYHelper Camera Server
+ND-SERVER-ICON = Input
+ST-SERVER-GV1-NAME = Version
+
+# Generic Camera Name
+ND-GCAM-NAME = Generic IP Camera
+ND-FCAM1-NAME = Foscam CGI Camera
+ND-FCAM1-ICON = Input
+
+ST-CAM-GV1-NAME = GV 1 Name
+ST-CAM-GV2-NAME = GV 2 Name
+ST-CAM-GV3-NAME = GV 3 Name
+ST-CAM-GV4-NAME = GV 4 Name
+
+CMD-ST-NAME = Query
