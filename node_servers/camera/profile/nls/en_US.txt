@@ -3,9 +3,9 @@ ND-CAMSERVER-NAME = ISYHelper Camera Server
 ND-SERVER-ICON = Input
 ST-SERVER-GV1-NAME = Version
 
-# Generic Camera Name
+# Camera Names
 ND-GCAM-NAME = Generic IP Camera
-ND-FCAM1-NAME = Foscam CGI Camera
+ND-FoscamCGI-NAME = Foscam CGI Camera
 ND-FCAM1-ICON = Input
 
 ST-CAM-GV1-NAME = Alarm Motion Armed
@@ -18,5 +18,31 @@ CMD-CAM-SET_ALMOA-NAME = Set Alarm Motion Armed
 CMD-CAM-SET_ALML-NAME = Set Alarm Send Mail
 CMD-CAM-SET_ALMOS-NAME = Set Alarm Motion Sensitivity
 CMD-CAM-SET_ALMOC-NAME = Set Alarm Motion Compensation
+
+CMD-CAM-SET_POS-NAME = Set Position
+
+# Camera sub nodes.
+ND-Motion-NAME = Camera Motion Sensor
+ND-Motion-ICON = Input
+
+ST-CAMNM-NAME = Motion
+CMD-CAMNM-ST-NAME = Motion
+
+CPOS-1 = Position 1
+CPOS-2 = Position 2
+CPOS-3 = Position 3
+CPOS-4 = Position 4
+CPOS-5 = Position 5
+CPOS-6 = Position 6
+CPOS-7 = Position 7
+CPOS-8 = Position 8
+CPOS-9 = Position 9
+CPOS-10 = Position 10
+CPOS-11 = Position 11
+CPOS-12 = Position 12
+CPOS-13 = Position 13
+CPOS-14 = Position 14
+CPOS-15 = Position 15
+CPOS-16 = Position 16
 
 

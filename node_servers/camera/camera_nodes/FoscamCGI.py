@@ -48,4 +48,4 @@ class FoscamCGI(Node):
     """
     _commands = {'QUERY': query}
     # The nodeDef id of this camers.
-    node_def_id = 'FCAM1'
+    node_def_id = 'FoscamCGI'

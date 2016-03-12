@@ -1,7 +1,8 @@
 <nodeDefs>
 
-  <!-- === Foscam CGI Camera ============================================================  -->
-  <nodeDef id="CAMSERVER" nodeType="139" nls="CAMS">
+  <!-- === Camera Server (not used currently) ==========================================  -->
+
+  <nodeDef id="CamServer" nodeType="139" nls="CAMS">
     <sts>
       <st id="GV1" editor="I_INTEGER" />
     </sts>
@@ -14,7 +15,8 @@
   </nodeDef>
 
   <!-- === Foscam CGI Camera ============================================================  -->
-  <nodeDef id="FCAM1" nodeType="139" nls="CAM">
+
+  <nodeDef id="FoscamCGI" nodeType="139" nls="CAM">
     <sts>
       <st id="GV1" editor="BOOL" />
       <st id="GV2" editor="BOOL" />
@@ -36,12 +38,30 @@
         <cmd id="SET_ALMOC">
           <p id="GV4" editor="BOOL" init="GV4" />
         </cmd>
+        <cmd id="SET_POS">
+          <p id="POS" editor="I_POS16" />
+        </cmd>
 	<cmd id="QUERY" />
       </accepts>
     </cmds>
   </nodeDef>
 
-  <!-- === Foscam CGI Camera ============================================================  -->
+  <!-- === Camera Motion Node ============================================================  -->
+  <nodeDef id="CamMotion" nodeType="139" nls="CAMNM">
+    <sts>
+      <st id="ST" editor="BOOL" />
+    </sts>
+    <cmds>
+      <sends>
+        <cmd id="DON" />
+        <cmd id="DOF" />
+      </sends>
+      <accepts>
+      </accepts>
+    </cmds>
+  </nodeDef>
+
+  <!-- === Some other Camera ============================================================  -->
   <nodeDef id="FCAM2" nodeType="139" nls="CAM">
     <sts>
       <st id="GV1" editor="I_INTEGER" />

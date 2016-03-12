@@ -8,4 +8,9 @@
        <range uom="2" subset="0,1" />
    </editor>
 
+    <!-- 16 Position Selector -->
+    <editor id="I_POS16">
+        <range uom="25" subset="1-16" nls="CPOS" />
+    </editor>
+
 </editors>
