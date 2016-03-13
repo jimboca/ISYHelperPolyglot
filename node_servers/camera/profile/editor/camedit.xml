@@ -8,9 +8,18 @@
        <range uom="2" subset="0,1" />
    </editor>
 
+   <editor id="I_ONOFF">
+       <range uom="25" subset="0,1" nls="CONOFF" />
+   </editor>
+
     <!-- 16 Position Selector -->
     <editor id="I_POS16">
         <range uom="25" subset="1-16" nls="CPOS" />
+    </editor>
+
+    <!-- 0-9 Motion Sensitivity -->
+    <editor id="I_ALMOS">
+        <range uom="25" subset="0-9" nls="CMOS" />
     </editor>
 
 </editors>

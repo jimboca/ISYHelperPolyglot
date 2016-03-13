@@ -35,26 +35,3 @@ class CameraServer(Node):
     # The nodeDef id of this camers.
     node_def_id = 'CAMSERVER'
 
-class Motion(Node):
-    """ Node that contains the Hub connection settings """
-
-    def __init__(self, parent, primary, manifest=None):
-        self.name = primary.name + "-Motion"
-        self.address = primary.address + "_m";
-        super(FoscamCGI, self).__init__(parent, self.address, self.name, primary, manifest)
-        self.ip = ip_address
-
-    def query(self, **kwargs):
-        """ query the camera """
-        # pylint: disable=unused-argument
-        return True #self.parent.connect()
-
-    _drivers = {
-        'ST': [0, 2, myint],
-    }
-    """ Driver Details:
-    ST: Moton on/off
-    """
-    _commands = { }
-    # The nodeDef id of this camers.
-    node_def_id = 'CamMotion'

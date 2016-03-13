@@ -26,18 +26,23 @@
     <cmds>
       <sends />
       <accepts>
+	<!--  Enable motion alarm -->
         <cmd id="SET_ALMOA">
           <p id="GV1" editor="BOOL" init="GV1" />
         </cmd>
+	<!--  Send email for motion alarm -->
         <cmd id="SET_ALML">
           <p id="GV2" editor="BOOL" init="GV2" />
         </cmd>
+	<!--  Motion Sensitivity: 0-9：high-low (but I think it is low-high) -->
         <cmd id="SET_ALMOS">
-          <p id="GV3" editor="BOOL" init="GV3" />
+          <p id="GV3" editor="I_ALMOS" init="GV3" />
         </cmd>
+	<!-- Enable alarm motion compensation or not when the light changes suddently，0：no，1：yes  -->
         <cmd id="SET_ALMOC">
           <p id="GV4" editor="BOOL" init="GV4" />
         </cmd>
+	<!--   -->
         <cmd id="SET_POS">
           <p id="POS" editor="I_POS16" />
         </cmd>
@@ -49,7 +54,7 @@
   <!-- === Camera Motion Node ============================================================  -->
   <nodeDef id="CamMotion" nodeType="139" nls="CAMNM">
     <sts>
-      <st id="ST" editor="BOOL" />
+      <st id="ST" editor="I_ONOFF" />
     </sts>
     <cmds>
       <sends>
@@ -57,6 +62,7 @@
         <cmd id="DOF" />
       </sends>
       <accepts>
+	<cmd id="QUERY" />
       </accepts>
     </cmds>
   </nodeDef>
