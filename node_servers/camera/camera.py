@@ -33,9 +33,9 @@ class CameraNodeServer(SimpleNodeServer):
         # define nodes for settings
         _LOGGER.info("setup:")
         self.manifest = self.config.get('manifest', {})
-        FoscamCGI(self, "192.168.1.110", "8080", "admin", "diabl099", self.manifest)
-        FoscamCGI(self, "192.168.1.111", "8080", "admin", "diabl099", self.manifest)
-        FoscamCGI(self, "192.168.1.112", "8080", "admin", "diabl099", self.manifest)
+        FoscamCGI(self, "192.168.1.110", "8080", "admin", "notmine", self.manifest)
+        FoscamCGI(self, "192.168.1.111", "8080", "admin", "notmine", self.manifest)
+        FoscamCGI(self, "192.168.1.112", "8080", "admin", "notmine", self.manifest)
         #self.connect()
         self.update_config() # not in NodeServer? Only SimpleNodeServer
 
