@@ -1,7 +1,32 @@
-TODO: Update this for foscam
 
-1. Install node server on the ISY controller.
-2. Set the IP address for the Hue Bridge using the ISY GUI.
-3. Press the connect button on the Hue Bridge.
-4. Press the connect button in the ISY GUI.
-5. Hue lights will be automatically added to the ISY.
+This node server is intended to support any type of camera.  Currently the following are supported:
+<ol>
+  <li>Foscam MJPEG<br>
+  This is any Foscam Camera whose model begins with F18.  This should be any camera that uses this interface http://www.foscam.es/descarga/ipcam_cgi_sdk.pdf which includes the non-HD Smarthome INSTEON cameras that are rebranded Foscam's.
+</ol>
+
+Creating the node server.
+
+<ol>
+  <li>Download the profile by selecting the button above
+  <li>Install node server on the ISY controller.
+  <ol>
+    <li>Select 'Node Server' -> 'Configure' and select one of the empty slots which must be the same as the 'Node Server ID' used when this Node Server as created on polyglot.<br>
+    <li> Profile Name: Can be anything, but it is recommended to use the same 'Name' you gave the polyglot node server.
+    <li> User: The Pologlot server user name
+    <li> Password: The Pologlot server password
+    <li> Base URL: Copy/Paste the 'Base URL' above for this node server.
+    <li> Host Name: Is the host name or ip address for the machine running polyglot
+    <li> Port: The polyglot server port, default is 8080 unless you changed it.
+    <li> Timeout: The default of 0 is fine?
+    <li> ISY User: The ISY User number to use when communicating, 0 is always admin?
+    <li> Select 'Upload Profile' and find the file you downloaded in Step 1.
+    <li> Click OK.
+    <li> If this is the first time the profile was loaded, or the profile has changed, you must reboot the ISY with the ISY Configuration -> Reboot option.
+  </ol>
+  <li> Once the ISY reboots, click the 'Resart Server' button above.
+  <li> You should then see a 'Camera Server' node on the ISY.  This node manages communication with the main polyglot camera node server.
+  <li> Currently config information for some cameras is in a seperate file.  TBD: Edit this file and add your cameras.
+  <li> Select the 'Camera Server' node and click the 'Query' button, this will re-read the config, and in the future scan your network for cameras and automatically add them.
+  <li> You should now see your cameras. If not, check the polyglot log by clicking the 'View Log' button on the left of this page.
+</ol>

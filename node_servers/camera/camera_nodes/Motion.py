@@ -9,10 +9,9 @@ class Motion(Node):
     """ Node that monitors motion """
 
     def __init__(self, parent, primary, manifest=None):
-        self.name = primary.name + "-Motion"
-        self.address = primary.address + "m";
-        super(Motion, self).__init__(parent, self.address, self.name, primary, manifest)
-        parent.add_node(self)
+        full_name    = primary.name    + "-Motion"
+        full_address = primary.address + "m";
+        super(Motion, self).__init__(parent, full_address, full_name, primary, manifest)
 
     def query(self, **kwargs):
         """ query the camera """
@@ -22,9 +21,18 @@ class Motion(Node):
         self.set_driver('ST', self.primary.status['alarm_status'], report=True)
         return True
 
+    def motion(self, value):
+        """ query the camera """
+        self.primary.status['alarm_status'] = value
+        return self.set_driver('ST', value, report=True)
+
     def poll(self):
         """ Poll Motion  """
-        return self.query()
+        # TODO: This should get the driver status
+        # TODO: This seems to bang on the camera twice per run?
+        if int(self.primary.status['alarm_status']) > 0:
+            return self.query()
+        return True
 
     _drivers = {
         'ST': [0, 25, myint],

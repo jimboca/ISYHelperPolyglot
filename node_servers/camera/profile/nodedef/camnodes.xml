@@ -1,10 +1,11 @@
 <nodeDefs>
 
-  <!-- === Camera Server (not used currently) ==========================================  -->
+  <!-- === Camera Server Holds all Camera Nodes ========================================  -->
 
-  <nodeDef id="CamServer" nodeType="139" nls="CAMS">
+  <nodeDef id="CameraServer" nodeType="139" nls="CAMS">
     <sts>
       <st id="GV1" editor="I_INTEGER" />
+      <st id="GV2" editor="I_INTEGER" />
     </sts>
     <cmds>
       <sends />
@@ -14,9 +15,9 @@
     </cmds>
   </nodeDef>
 
-  <!-- === Foscam CGI Camera ============================================================  -->
+  <!-- === Foscam MJPEG Camera ============================================================  -->
 
-  <nodeDef id="FoscamCGI" nodeType="139" nls="CAM">
+  <nodeDef id="FoscamMJPEG" nodeType="139" nls="CAM">
     <sts>
       <st id="GV1" editor="BOOL" />
       <st id="GV2" editor="BOOL" />
