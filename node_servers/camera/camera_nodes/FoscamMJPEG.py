@@ -7,7 +7,6 @@
 from polyglot.nodeserver_api import Node
 from Motion import Motion
 from functools import partial
-import logging
 
 def myint(value):
     """ round and convert to int """
@@ -46,7 +45,7 @@ class FoscamMJPEG(Node):
     def query(self, **kwargs):
         """ query the camera """
         self._get_params();
-        #self.parent.poly.send_error("%s=%s" % ('alarm_motion_armed', self.params['alarm_motion_armed']) )        
+        #self.parent.send_error("%s=%s" % ('alarm_motion_armed', self.params['alarm_motion_armed']) )        
         self.set_driver('GV1', self.params['alarm_motion_armed'], report=False) # ,uom=int, report=False ?
         self.set_driver('GV2', self.params['alarm_mail'], report=False)
         self.set_driver('GV3', self.params['alarm_motion_sensitivity'], report=False)
@@ -104,11 +103,11 @@ class FoscamMJPEG(Node):
     def _set_alarm_param(self, driver=None, param=None, **kwargs):
         value = kwargs.get("value")
         if value is None:
-            self.parent.poly.send_error("_set_alarm_param not passed a value: %s" % (value) )
+            self.parent.send_error("_set_alarm_param not passed a value: %s" % (value) )
             return False
         # TODO: Should use the _driver specified function instead of int.
         if not self._set_alarm_params({ param: int(value)}):
-            self.parent.poly.send_error("_set_alarm_param failed to set %s=%s" % (param,value) )
+            self.parent.send_error("_set_alarm_param failed to set %s=%s" % (param,value) )
         # TODO: Dont' think I should be setting the driver?
         self.set_driver(driver, value, report=True)
         # The set_alarm param is without the '_alarm' prefix
@@ -126,12 +125,12 @@ class FoscamMJPEG(Node):
         """
         value = kwargs.get("value")
         if value is None:
-            self.parent.poly.send_error("_goto_preset not passed a value: %s" % (value) )
+            self.parent.send_error("_goto_preset not passed a value: %s" % (value) )
             return False
         value * 2 + 29
         value = myint((value * 2) + 29)
         if not self._decoder_control( { 'command': value} ):
-            self.parent.poly.send_error("_goto_preset failed to set %s" % (value) )
+            self.parent.send_error("_goto_preset failed to set %s" % (value) )
         return True
 
     _drivers = {

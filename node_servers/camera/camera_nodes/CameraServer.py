@@ -12,7 +12,6 @@
 from polyglot.nodeserver_api import Node
 from Motion import Motion
 from functools import partial
-import logging
 
 from camera_nodes import *
 
@@ -35,10 +34,9 @@ class CameraServer(Node):
 
     def query(self, **kwargs):
         """ Look for cameras """
-        self._LOGGER.info("manifest="+str(self.manifest))
-        FoscamMJPEG(self.parent, True, "192.168.1.110", "8080", "admin", "notmine", self.manifest)
-        FoscamMJPEG(self.parent, True, "192.168.1.111", "8080", "admin", "notmine", self.manifest)
-        FoscamMJPEG(self.parent, True, "192.168.1.112", "8080", "admin", "notmine", self.manifest)
+        FoscamMJPEG(self.parent, True, "192.168.1.110", "8080", "admin", "diabl099", self.manifest)
+        FoscamMJPEG(self.parent, True, "192.168.1.111", "8080", "admin", "diabl099", self.manifest)
+        FoscamMJPEG(self.parent, True, "192.168.1.112", "8080", "admin", "diabl099", self.manifest)
         # Number of Cameras we know about.
         self.set_driver('GV2', 3, report=True) # ,uom=int,
         return True
