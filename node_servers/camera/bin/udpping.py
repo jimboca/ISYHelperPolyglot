@@ -18,7 +18,7 @@ PING_MSG_SIZE    = 130
 # ftp://109.108.88.53/Nadzor/FOSCAM/SDK%20CGI/MJPEG%20CGI%20SDK/MJPEG%20CGI%20SDK/Ipcamera%20device%20search%20protocol.pdf
 SEARCH_REQUEST = pack(">4sH?8sll4s", "MO_I", 0, 0, "", 67108864, 0, "")
 
-def main():
+def foscam_poll():
 
     # Create UDP socket
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
@@ -36,7 +36,7 @@ def main():
     while time.time() < main_timeout:
 
         # Broadcast our beacon
-        print ("\n----------\nPinging peers")
+        print ("-----------------------\nPinging peers")
         sock.sendto(SEARCH_REQUEST, 0, ("255.255.255.255", PING_PORT_NUMBER))
             
         ping_timeout = time.time() + PING_INTERVAL
@@ -44,14 +44,15 @@ def main():
         while time.time() < ping_timeout:
 
             # Listen for a response with timeout
+            addr = None
             try:
                 msg, (addr, uport) = sock.recvfrom(PING_MSG_SIZE)
             except socket.timeout:
-                print "No more reponses"
+                print "- No more reponses"
 
             # Someone answered our ping?
             if addr is not None:
-                print "\nResponse from: %s:%d" % (addr, uport)
+                print "----\nResponse from: %s:%d" % (addr, uport)
                 print "msg=%s" % msg
                 if len(msg) == 88:
                     upk = unpack('>23s13s21s4I4b4b4bH?',msg)
@@ -79,4 +80,4 @@ def main():
                     print "   Ignored"
 
 if __name__ == '__main__':
-    main()
+    foscam_poll()
