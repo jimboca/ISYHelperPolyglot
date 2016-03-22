@@ -28,7 +28,8 @@ def main():
 
     # Bind UDP socket to local port so we can receive pings
     sock.bind(('', PING_PORT_NUMBER))
-    sock.setblocking(0)
+    # Use timeout
+    sock.settimeout(PING_INTERVAL)
 
     main_timeout = time.time() + TIMEOUT
 
@@ -42,11 +43,14 @@ def main():
 
         while time.time() < ping_timeout:
 
-            # Any data?
-            ready = select.select([sock], [], [], PING_INTERVAL)
-            if ready[0]:
-                # Someone answered our ping
+            # Listen for a response with timeout
+            try:
                 msg, (addr, uport) = sock.recvfrom(PING_MSG_SIZE)
+            except socket.timeout:
+                print "No more reponses"
+
+            # Someone answered our ping?
+            if addr is not None:
                 print "\nResponse from: %s:%d" % (addr, uport)
                 print "msg=%s" % msg
                 if len(msg) == 88:
