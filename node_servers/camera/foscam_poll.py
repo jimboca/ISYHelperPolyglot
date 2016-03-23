@@ -20,7 +20,7 @@ SEARCH_REQUEST = pack(">4sH?8sll4s", "MO_I", 0, 0, "", 67108864, 0, "")
 
 def foscam_poll():
 
-    clients = ()
+    clients = []
     clients_by_addr = {}
 
     # Create UDP socket
@@ -69,24 +69,24 @@ def foscam_poll():
             #print upk
             (header, id, name, ip_i, mask_i, gateway_i, dns_i, r1, r2, r3, r4, s1, s2, s3, s4, a1, a2, a3, a4, port, dhcp) = upk
             client = { 
-                id:        id.rstrip('\x00'),
-                name:      name.rstrip('\x00'),
-                ip:        socket.inet_ntoa(pack('!I',ip_i)),
-                port:      port,
-                mask:      socket.inet_ntoa(pack('!I',mask_i)), 
-                gateway:   socket.inet_ntoa(pack('!I',gateway_i)), 
-                dns:       socket.inet_ntoa(pack('!I',dns_i)), 
-                reserve:   "%d.%d.%d.%d" % (r1, r2, r3, r4),
-                sys:       "%d.%d.%d.%d" % (s1, s2, s3, s4),
-                app:       "%d.%d.%d.%d" % (a1, a2, a3, a4), 
-                dhcp:      dhcp,
-                reserve_a: (r1, r2, r3, r4),
-                sys_a:     (s1, s2, s3, s4),
-                app_a:     (a1, a2, a3, a4),
+                'id':        id.rstrip('\x00'),
+                'name':      name.rstrip('\x00'),
+                'ip':        socket.inet_ntoa(pack('!I',ip_i)),
+                'port':      port,
+                'mask':      socket.inet_ntoa(pack('!I',mask_i)), 
+                'gateway':   socket.inet_ntoa(pack('!I',gateway_i)), 
+                'dns':       socket.inet_ntoa(pack('!I',dns_i)), 
+                'reserve':   "%d.%d.%d.%d" % (r1, r2, r3, r4),
+                'sys':       "%d.%d.%d.%d" % (s1, s2, s3, s4),
+                'app':       "%d.%d.%d.%d" % (a1, a2, a3, a4), 
+                'dhcp':      dhcp,
+                'reserve_a': (r1, r2, r3, r4),
+                'sys_a':     (s1, s2, s3, s4),
+                'app_a':     (a1, a2, a3, a4),
             }
             print "  Foscam Info: "
             print client
-            clients.push(client)
+            clients.append(client)
         else:
             print "   Ignoring message of size " + str(len(msg))
 
