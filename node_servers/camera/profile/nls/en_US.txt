@@ -4,6 +4,14 @@ ND-CameraServer-NAME = Camera Server
 ND-CameraServer-ICON = Input
 ST-CAMS-GV1-NAME = Version
 ST-CAMS-GV2-NAME = Cameras
+ST-CAMS-GV3-NAME = Foscam MJPEG Search
+
+CMD-SET_FOSCAM_MJPEG-NAME = Foscam MJPEG Search
+CFMJPEG-0 = Off
+CFMJPEG-1 = 10s Query
+CFMJPEG-2 = 20s Query
+CFMJPEG-3 = 30s Query
+CFMJPEG-4 = 60s Query
 
 # Camera Names
 ND-GCAM-NAME = Generic IP Camera
@@ -12,10 +20,12 @@ ND-FoscamMJPEG-ICON = Input
 ND-FCAM1-ICON = Input
 
 # Camera Controls
-ST-CAM-GV1-NAME = Alarm Motion Armed
-ST-CAM-GV2-NAME = Alarm Send Mail
-ST-CAM-GV3-NAME = Alarm Motion Sensitivity
-ST-CAM-GV4-NAME = Alarm Motion Compensation
+ST-CAM-GV1-NAME = Responding
+ST-CAM-GV2-NAME = Connected
+ST-CAM-GV3-NAME = Alarm Motion Armed
+ST-CAM-GV4-NAME = Alarm Send Mail
+ST-CAM-GV5-NAME = Alarm Motion Sensitivity
+ST-CAM-GV6-NAME = Alarm Motion Compensation
 
 CMD-ST-NAME = Query
 CMD-CAM-SET_ALMOA-NAME = Set Alarm Motion Armed
@@ -63,3 +73,5 @@ CMD-CAMNM-ST-NAME = Motion
 CONOFF-0 = Off
 CONOFF-1 = On
 
+B_TF-0 = False
+B_TF-1 = True

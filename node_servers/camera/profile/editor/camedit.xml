@@ -5,7 +5,11 @@
    </editor>
 
    <editor id="BOOL">
-       <range uom="2" subset="0,1" />
+       <range uom="2" subset="0,1" nls="B_TF"/>
+   </editor>
+
+   <editor id="FLOAT">
+       <range uom="56" />
    </editor>
 
    <editor id="I_ONOFF">
@@ -20,6 +24,11 @@
     <!-- 0-9 Motion Sensitivity -->
     <editor id="I_ALMOS">
         <range uom="25" subset="0-9" nls="CMOS" />
+    </editor>
+
+    <!-- 0-9 Motion Sensitivity -->
+    <editor id="I_FOSCAM_MJPEG">
+        <range uom="25" subset="0-4" nls="CFMJPEG" />
     </editor>
 
 </editors>

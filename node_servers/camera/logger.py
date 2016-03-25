@@ -1,12 +1,17 @@
+#
+# File: logger.py
+#
+# Create a log for the nodeserver. In the setup method call with:
+#   self.logger = setup_log(self.poly.sandbox,self.poly.name)
+#
+
 import logging
 import logging.handlers
 import time
-import sys
-import os
 
-def setup_log(name):
+def setup_log(path,name):
    # Log Location
-   LOG_FILENAME = os.path.dirname(os.path.abspath(__file__)) + "/camera.log"
+   LOG_FILENAME = path + "/" + name + ".log"
    LOG_LEVEL = logging.DEBUG  # Could be e.g. "DEBUG" or "WARNING"
 
    #### Logging Section ################################################################################

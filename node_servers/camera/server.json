@@ -3,7 +3,7 @@
     "docs": "https://www.google.com",
     "type": "python",
     "executable": "camera.py",
-    "description": "Connect a cameras to the ISY994.",
+    "description": "Connect cameras to the ISY994.",
     "notice": "\"Foscam\" is a trademark owned by someone. This Node Server is neither developed by nor endorsed by the Foscam.",
     "credits": [
         {

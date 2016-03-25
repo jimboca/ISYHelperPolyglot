@@ -4,13 +4,18 @@
 
   <nodeDef id="CameraServer" nodeType="139" nls="CAMS">
     <sts>
-      <st id="GV1" editor="I_INTEGER" />
+      <st id="GV1" editor="FLOAT" />
       <st id="GV2" editor="I_INTEGER" />
+      <st id="GV3" editor="I_INTEGER" />
     </sts>
     <cmds>
       <sends />
       <accepts>
 	<cmd id="QUERY" />
+	<!--  Enable motion alarm -->
+        <cmd id="SET_FOSCAM_MJPEG">
+          <p id="GV3" editor="I_FOSCAM_MJPEG" init="GV3" />
+        </cmd>
       </accepts>
     </cmds>
   </nodeDef>
@@ -23,25 +28,27 @@
       <st id="GV2" editor="BOOL" />
       <st id="GV3" editor="BOOL" />
       <st id="GV4" editor="BOOL" />
+      <st id="GV5" editor="I_ALMOS" />
+      <st id="GV6" editor="BOOL" />
     </sts>
     <cmds>
       <sends />
       <accepts>
 	<!--  Enable motion alarm -->
         <cmd id="SET_ALMOA">
-          <p id="GV1" editor="BOOL" init="GV1" />
+          <p id="GV3" editor="BOOL" init="GV1" />
         </cmd>
 	<!--  Send email for motion alarm -->
         <cmd id="SET_ALML">
-          <p id="GV2" editor="BOOL" init="GV2" />
+          <p id="GV4" editor="BOOL" init="GV2" />
         </cmd>
 	<!--  Motion Sensitivity: 0-9：high-low (but I think it is low-high) -->
         <cmd id="SET_ALMOS">
-          <p id="GV3" editor="I_ALMOS" init="GV3" />
+          <p id="GV5" editor="I_ALMOS" init="GV3" />
         </cmd>
 	<!-- Enable alarm motion compensation or not when the light changes suddently，0：no，1：yes  -->
         <cmd id="SET_ALMOC">
-          <p id="GV4" editor="BOOL" init="GV4" />
+          <p id="GV6" editor="BOOL" init="GV6" />
         </cmd>
 	<!--   -->
         <cmd id="SET_POS">

@@ -3,7 +3,9 @@
 #  - Set var alarm_http_url='http://192.168.1.66:25066/foscam/set.php';
 #    To set device status on ISY.
 #  - And var alarm_http=1;
-#
+#  - Can't use ping for "responding" since it needs root?  So now it is always the same as "connected"
+
+import os
 from polyglot.nodeserver_api import Node
 from Motion import Motion
 from functools import partial
@@ -15,19 +17,25 @@ def myint(value):
 class FoscamMJPEG(Node):
     """ Node that contains the Hub connection settings """
 
-    def __init__(self, parent, primary, ip_address, port, user, password, manifest=None):
+    def __init__(self, parent, primary, ip_address, port, user, password, manifest=None, name=None, address=None):
         self.parent      = parent
         self.ip          = ip_address
         self.port        = port
         self.user        = user
         self.password    = password
+        self.connected   = 0
+        self.parent.logger.info("FoscamMJPEG: Adding %s:%s" % (self.ip,self.port))
         #
-        # Get status which contains the camera id and alias.
+        # Get status which contains the camera id and alias, and we need it to add Motion node.
         self._get_status()
         if not self.status:
             return None
-        address  = self.status['id'].lower()
-        name     = self.status['alias']
+        if name is None:
+            name     = self.status['alias']
+        if address is None:
+            address  = self.status['id']
+        # Address must be lower case?
+        address = address.lower()
         # Add the Camera
         super(FoscamMJPEG, self).__init__(parent, address, name, primary, manifest)
         self._get_params();
@@ -41,17 +49,21 @@ class FoscamMJPEG(Node):
         });
         # Call query to pull in the params.
         self.query();
+        self.parent.logger.info("FoscamMJPEG: Added camera at %s:%s '%s' %s" % (self.ip,self.port,name,address))
 
     def query(self, **kwargs):
         """ query the camera """
-        self._get_params();
-        #self.parent.send_error("%s=%s" % ('alarm_motion_armed', self.params['alarm_motion_armed']) )        
-        self.set_driver('GV1', self.params['alarm_motion_armed'], report=False) # ,uom=int, report=False ?
-        self.set_driver('GV2', self.params['alarm_mail'], report=False)
-        self.set_driver('GV3', self.params['alarm_motion_sensitivity'], report=False)
-        self.set_driver('GV4', self.params['alarm_motion_compensation'], report=False)
-        self.report_driver()
         # pylint: disable=unused-argument
+        self.parent.logger.info("FoscamMJPEG: Query camera '%s'" % (self.name))
+        self._get_params();
+        if self.params:
+            self.set_driver('GV3', self.params['alarm_motion_armed'], report=False) # ,uom=int, report=False ?
+            self.set_driver('GV4', self.params['alarm_mail'], report=False)
+            self.set_driver('GV5', self.params['alarm_motion_sensitivity'], report=False)
+            self.set_driver('GV6', self.params['alarm_motion_compensation'], report=False)
+        self.set_driver('GV1', self.connected, report=False)
+        self.set_driver('GV2', self.connected, report=False)
+        self.report_driver()
         return True
 
     def _http_get(self, path, payload = {}):
@@ -74,14 +86,26 @@ class FoscamMJPEG(Node):
     
     def _get_params(self):
         """ Call get_params on the camera and store in params """
-        data = self._http_get_and_parse("get_params.cgi")
-        self.params = data
-        return data
+        self.params = self._http_get_and_parse("get_params.cgi")
+        if self.params:
+            self.connected = 1
+        else:
+            self.connected = 0
 
     def poll(self):
-        """ Nothing to poll?  We could poll to see if settings were manually changed?  """
+        """ Nothing to poll?  """
+        #response = os.system("ping -c 1 -w2 " + self.ip + " > /dev/null 2>&1")
         return
 
+    def long_poll(self):
+        self._get_status()
+        connected = 0
+        if self.status:
+            connected = 1
+        if connected != self.connected:
+            self.set_driver('GV1', connected, report=True)
+            self.set_driver('GV2', connected, report=True)
+    
     def _set_alarm_params(self,params):
         """ 
         Set the sepecified params on the camera
@@ -94,11 +118,16 @@ class FoscamMJPEG(Node):
         """
         return self._http_get("decoder_control.cgi",params)
 
-    def _get_status(self):
+    def _get_status(self,report=True):
         """ 
         Call get_status on the camera and store in status
         """
         self.status = self._http_get_and_parse("get_status.cgi")
+        if self.status:
+            self.connected = 1
+        else:
+            self.connected = 0
+            self.parent.send_error("Failed to get_status of camera %s" (self.ip,self.port))
 
     def _set_alarm_param(self, driver=None, param=None, **kwargs):
         value = kwargs.get("value")
@@ -138,19 +167,23 @@ class FoscamMJPEG(Node):
         'GV2': [0, 56, myint],
         'GV3': [0, 56, myint],
         'GV4': [0, 56, myint],
+        'GV5': [0, 56, myint],
+        'GV6': [0, 56, myint],
     }
     """ Driver Details:
-    GV1: An integer
-    GV2: An integer
-    GV3: An integer
-    GV4: An integer
+    GV1: integer: Responding
+    GV2: integer: Connected
+    GV3: integer: Alarm Motion Armed
+    GV4: integer: Alarm Send Mail
+    GV5: integer: Motion Sensitivity
+    GV6: ingeger: Motion Compenstation
     """
     _commands = {
         'QUERY': query,
-        'SET_ALMOA': partial(_set_alarm_param, driver="GV1", param='motion_armed'),
-        'SET_ALML':  partial(_set_alarm_param, driver="GV2", param='motion_mail'),
-        'SET_ALMOS': partial(_set_alarm_param, driver="GV3", param='motion_sensitivity'),
-        'SET_ALMOC': partial(_set_alarm_param, driver="GV4", param='motion_compensation'),
+        'SET_ALMOA': partial(_set_alarm_param, driver="GV3", param='motion_armed'),
+        'SET_ALML':  partial(_set_alarm_param, driver="GV4", param='motion_mail'),
+        'SET_ALMOS': partial(_set_alarm_param, driver="GV5", param='motion_sensitivity'),
+        'SET_ALMOC': partial(_set_alarm_param, driver="GV6", param='motion_compensation'),
         'SET_POS':   _goto_preset,
     }
     # The nodeDef id of this camers.

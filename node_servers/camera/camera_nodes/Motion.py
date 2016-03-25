@@ -16,6 +16,7 @@ class Motion(Node):
     def query(self, **kwargs):
         """ query the camera """
         # pylint: disable=unused-argument
+        self.parent.logger.info("Motion: Query '%s'" % (self.name))
         self.primary._get_status()
         # TODO: Should report only be true if it changes?
         self.set_driver('ST', self.primary.status['alarm_status'], report=True)
@@ -23,6 +24,7 @@ class Motion(Node):
 
     def motion(self, value):
         """ query the camera """
+        self.parent.logger.info("Motion: Seting alarm status of '%s' to %s" % (self.name,value))
         self.primary.status['alarm_status'] = value
         return self.set_driver('ST', value, report=True)
 
@@ -31,6 +33,7 @@ class Motion(Node):
         # TODO: This should get the driver status
         # TODO: This seems to bang on the camera twice per run?
         if int(self.primary.status['alarm_status']) > 0:
+            self.parent.logger.info("Motion: Check alarm status of '%s'" % (self.name))
             return self.query()
         return True
 
