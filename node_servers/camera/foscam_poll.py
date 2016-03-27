@@ -67,12 +67,13 @@ def foscam_poll(logger=None,verbose=False):
 
         if logger is not None:
             logger.debug("Response from: %s" % (addr))
+            if verbose:
+                logger.debug("msg=%s" % msg)
+            
         if msg == SEARCH_REQUEST:
             if logger is not None:
                 logger.debug("ignore my echo")
         elif len(msg) == 88:
-            if verbose and logger is not None:
-                logger.debug("msg=%s" % msg)
             upk = unpack('>23s13s21s4I4b4b4bH?',msg)
             if verbose and logger is not None:
                 logger.debug(upk)

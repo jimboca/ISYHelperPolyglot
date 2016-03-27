@@ -16,10 +16,11 @@ class Motion(Node):
     def query(self, **kwargs):
         """ query the camera """
         # pylint: disable=unused-argument
-        self.parent.logger.info("Motion: Query '%s'" % (self.name))
+        self.parent.logger.info("Motion:query:start: '%s'" % (self.name))
         self.primary._get_status()
         # TODO: Should report only be true if it changes?
         self.set_driver('ST', self.primary.status['alarm_status'], report=True)
+        self.parent.logger.info("Motion:query:done: '%s'" % (self.name))
         return True
 
     def motion(self, value):

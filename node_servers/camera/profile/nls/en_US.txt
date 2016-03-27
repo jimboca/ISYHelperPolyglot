@@ -5,6 +5,7 @@ ND-CameraServer-ICON = Input
 ST-CAMS-GV1-NAME = Version
 ST-CAMS-GV2-NAME = Cameras
 ST-CAMS-GV3-NAME = Foscam MJPEG Search
+ST-CAMS-GV4-NAME = Debug Mode
 
 CMD-SET_FOSCAM_MJPEG-NAME = Foscam MJPEG Search
 CFMJPEG-0 = Off
@@ -13,6 +14,15 @@ CFMJPEG-2 = 20s Query
 CFMJPEG-3 = 30s Query
 CFMJPEG-4 = 60s Query
 
+CMD-SET_DM-NAME = Debug
+CDM-0 = Off
+CDM-1 = Error
+CDM-2 = Warning
+CDM-3 = Info
+CDM-4 = Debug
+
+CMD-DISCOVER-NAME = Discover
+
 # Camera Names
 ND-GCAM-NAME = Generic IP Camera
 ND-FoscamMJPEG-NAME = Foscam MJPEG Camera
@@ -20,12 +30,15 @@ ND-FoscamMJPEG-ICON = Input
 ND-FCAM1-ICON = Input
 
 # Camera Controls
-ST-CAM-GV1-NAME = Responding
-ST-CAM-GV2-NAME = Connected
-ST-CAM-GV3-NAME = Alarm Motion Armed
-ST-CAM-GV4-NAME = Alarm Send Mail
-ST-CAM-GV5-NAME = Alarm Motion Sensitivity
-ST-CAM-GV6-NAME = Alarm Motion Compensation
+ST-CAM-GV1-NAME = Version
+ST-CAM-GV2-NAME = IP Address
+ST-CAM-GV3-NAME = Port
+ST-CAM-GV4-NAME = Responding
+ST-CAM-GV5-NAME = Connected
+ST-CAM-GV6-NAME = Alarm Motion Armed
+ST-CAM-GV7-NAME = Alarm Send Mail
+ST-CAM-GV8-NAME = Motion Sensitivity
+ST-CAM-GV9-NAME = Motion Compensation
 
 CMD-ST-NAME = Query
 CMD-CAM-SET_ALMOA-NAME = Set Alarm Motion Armed

@@ -1,6 +1,7 @@
 #!/usr/bin/python
-
 #
+# Install:
+#  sudo pip install ipaddr
 # Issues:
 #  - Once the node is registered, it's name will not change.
 #
@@ -31,8 +32,8 @@ class CameraNodeServer(SimpleNodeServer):
         """ Initial node setup. """
         self.logger = setup_log(self.poly.sandbox,self.poly.name)
         self.logger.info('CameraNodeServer starting up.')
-        self.logger.info("CameraNodeServer: Sandbox= %s" % (self.poly.sandbox))
-        self.logger.info("CameraNodeServer: Config= %s" % (self.config))
+        self.logger.info("CameraNodeServer: Sandbox=%s" % (self.poly.sandbox))
+        self.logger.info("CameraNodeServer: Config=%s" % (self.config))
         # define nodes for settings
         # Start a simple server for cameras to ping
         self.server = start_server(self)

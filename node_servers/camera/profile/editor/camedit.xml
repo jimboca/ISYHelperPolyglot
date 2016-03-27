@@ -4,6 +4,10 @@
        <range uom="25" min="0" max="1000" prec="0" />
    </editor>
 
+   <editor id="I_INTEGER_L">
+       <range uom="25" min="0" max="4294967295" prec="0" />
+   </editor>
+
    <editor id="BOOL">
        <range uom="2" subset="0,1" nls="B_TF"/>
    </editor>
@@ -26,9 +30,14 @@
         <range uom="25" subset="0-9" nls="CMOS" />
     </editor>
 
-    <!-- 0-9 Motion Sensitivity -->
+    <!-- 0-4 Foscam polling mode -->
     <editor id="I_FOSCAM_MJPEG">
         <range uom="25" subset="0-4" nls="CFMJPEG" />
+    </editor>
+
+    <!-- 0-4 Log Debug Mode -->
+    <editor id="I_DM">
+        <range uom="25" subset="0-4" nls="CDM" />
     </editor>
 
 </editors>

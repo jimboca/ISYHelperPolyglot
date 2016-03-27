@@ -7,14 +7,20 @@
       <st id="GV1" editor="FLOAT" />
       <st id="GV2" editor="I_INTEGER" />
       <st id="GV3" editor="I_INTEGER" />
+      <st id="GV4" editor="I_INTEGER" />
     </sts>
     <cmds>
       <sends />
       <accepts>
 	<cmd id="QUERY" />
-	<!--  Enable motion alarm -->
+	<cmd id="DISCOVER" />
+	<!--  Foscam MJPEG Polling -->
         <cmd id="SET_FOSCAM_MJPEG">
           <p id="GV3" editor="I_FOSCAM_MJPEG" init="GV3" />
+        </cmd>
+	<!--  Log Debug Mode -->
+        <cmd id="SET_DM">
+          <p id="GV4" editor="I_DM" init="GV4" />
         </cmd>
       </accepts>
     </cmds>
@@ -24,31 +30,34 @@
 
   <nodeDef id="FoscamMJPEG" nodeType="139" nls="CAM">
     <sts>
-      <st id="GV1" editor="BOOL" />
-      <st id="GV2" editor="BOOL" />
-      <st id="GV3" editor="BOOL" />
+      <st id="GV1" editor="FLOAT" />
+      <st id="GV2" editor="I_INTEGER" />
+      <st id="GV3" editor="I_INTEGER" />
       <st id="GV4" editor="BOOL" />
-      <st id="GV5" editor="I_ALMOS" />
+      <st id="GV5" editor="BOOL" />
       <st id="GV6" editor="BOOL" />
+      <st id="GV7" editor="BOOL" />
+      <st id="GV8" editor="I_ALMOS" />
+      <st id="GV9" editor="BOOL" />
     </sts>
     <cmds>
       <sends />
       <accepts>
 	<!--  Enable motion alarm -->
         <cmd id="SET_ALMOA">
-          <p id="GV3" editor="BOOL" init="GV1" />
+          <p id="GV6" editor="BOOL" init="GV6" />
         </cmd>
 	<!--  Send email for motion alarm -->
         <cmd id="SET_ALML">
-          <p id="GV4" editor="BOOL" init="GV2" />
+          <p id="GV7" editor="BOOL" init="GV7" />
         </cmd>
 	<!--  Motion Sensitivity: 0-9：high-low (but I think it is low-high) -->
         <cmd id="SET_ALMOS">
-          <p id="GV5" editor="I_ALMOS" init="GV3" />
+          <p id="GV8" editor="I_ALMOS" init="GV8" />
         </cmd>
 	<!-- Enable alarm motion compensation or not when the light changes suddently，0：no，1：yes  -->
         <cmd id="SET_ALMOC">
-          <p id="GV6" editor="BOOL" init="GV6" />
+          <p id="GV9" editor="BOOL" init="GV9" />
         </cmd>
 	<!--   -->
         <cmd id="SET_POS">

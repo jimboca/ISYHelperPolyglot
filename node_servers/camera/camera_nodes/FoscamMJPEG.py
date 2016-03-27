@@ -5,18 +5,18 @@
 #  - And var alarm_http=1;
 #  - Can't use ping for "responding" since it needs root?  So now it is always the same as "connected"
 
+VERSION = 0.1
+
 import os
 from polyglot.nodeserver_api import Node
 from Motion import Motion
 from functools import partial
-
-def myint(value):
-    """ round and convert to int """
-    return int(round(float(value)))
+from camera_funcs import myint,myfloat,ip2long,long2ip
 
 class FoscamMJPEG(Node):
-    """ Node that contains the Hub connection settings """
-
+    """ 
+    Node that contains the Hub connection settings 
+    """
     def __init__(self, parent, primary, ip_address, port, user, password, manifest=None, name=None, address=None):
         self.parent      = parent
         self.ip          = ip_address
@@ -38,6 +38,9 @@ class FoscamMJPEG(Node):
         address = address.lower()
         # Add the Camera
         super(FoscamMJPEG, self).__init__(parent, address, name, primary, manifest)
+        self.set_driver('GV1', VERSION, report=False)
+        self.set_driver('GV2', ip2long(ip_address), report=False)
+        self.set_driver('GV3', port, report=False)
         self._get_params();
         # Add my motion node.
         self.motion = Motion(parent, self, manifest)
@@ -54,16 +57,17 @@ class FoscamMJPEG(Node):
     def query(self, **kwargs):
         """ query the camera """
         # pylint: disable=unused-argument
-        self.parent.logger.info("FoscamMJPEG: Query camera '%s'" % (self.name))
+        self.parent.logger.info("FoscamMJPEG:query:start: camera '%s'" % (self.name))
         self._get_params();
+        self.set_driver('GV4', self.connected, report=False)
+        self.set_driver('GV5', self.connected, report=False)
         if self.params:
-            self.set_driver('GV3', self.params['alarm_motion_armed'], report=False) # ,uom=int, report=False ?
-            self.set_driver('GV4', self.params['alarm_mail'], report=False)
-            self.set_driver('GV5', self.params['alarm_motion_sensitivity'], report=False)
-            self.set_driver('GV6', self.params['alarm_motion_compensation'], report=False)
-        self.set_driver('GV1', self.connected, report=False)
-        self.set_driver('GV2', self.connected, report=False)
+            self.set_driver('GV6', self.params['alarm_motion_armed'], report=False) # ,uom=int, report=False ?
+            self.set_driver('GV7', self.params['alarm_mail'], report=False)
+            self.set_driver('GV8', self.params['alarm_motion_sensitivity'], report=False)
+            self.set_driver('GV9', self.params['alarm_motion_compensation'], report=False)
         self.report_driver()
+        self.parent.logger.info("FoscamMJPEG:query:done: camera '%s'" % (self.name))
         return True
 
     def _http_get(self, path, payload = {}):
@@ -103,8 +107,8 @@ class FoscamMJPEG(Node):
         if self.status:
             connected = 1
         if connected != self.connected:
-            self.set_driver('GV1', connected, report=True)
-            self.set_driver('GV2', connected, report=True)
+            self.set_driver('GV3', connected, report=True)
+            self.set_driver('GV4', connected, report=True)
     
     def _set_alarm_params(self,params):
         """ 
@@ -127,7 +131,7 @@ class FoscamMJPEG(Node):
             self.connected = 1
         else:
             self.connected = 0
-            self.parent.send_error("Failed to get_status of camera %s" (self.ip,self.port))
+            self.parent.send_error("Failed to get_status of camera %s:%s" % (self.ip,self.port))
 
     def _set_alarm_param(self, driver=None, param=None, **kwargs):
         value = kwargs.get("value")
@@ -163,27 +167,33 @@ class FoscamMJPEG(Node):
         return True
 
     _drivers = {
-        'GV1': [0, 56, myint],
+        'GV1': [0, 56, myfloat],
         'GV2': [0, 56, myint],
         'GV3': [0, 56, myint],
         'GV4': [0, 56, myint],
         'GV5': [0, 56, myint],
         'GV6': [0, 56, myint],
+        'GV7': [0, 56, myint],
+        'GV8': [0, 56, myint],
+        'GV9': [0, 56, myint],
     }
     """ Driver Details:
-    GV1: integer: Responding
-    GV2: integer: Connected
-    GV3: integer: Alarm Motion Armed
-    GV4: integer: Alarm Send Mail
-    GV5: integer: Motion Sensitivity
-    GV6: ingeger: Motion Compenstation
+    GV1:  float:   Version of this code.
+    GV2:  integer: IP Address
+    GV3:  integer: Port
+    GV4:  integer: Responding
+    GV5:  integer: Connected
+    GV6:  integer: Alarm Motion Armed
+    GV7:  integer: Alarm Send Mail
+    GV8:  integer: Motion Sensitivity
+    GV9:  integer: Motion Compenstation
     """
     _commands = {
         'QUERY': query,
-        'SET_ALMOA': partial(_set_alarm_param, driver="GV3", param='motion_armed'),
-        'SET_ALML':  partial(_set_alarm_param, driver="GV4", param='motion_mail'),
-        'SET_ALMOS': partial(_set_alarm_param, driver="GV5", param='motion_sensitivity'),
-        'SET_ALMOC': partial(_set_alarm_param, driver="GV6", param='motion_compensation'),
+        'SET_ALMOA': partial(_set_alarm_param, driver="GV6", param='motion_armed'),
+        'SET_ALML':  partial(_set_alarm_param, driver="GV7", param='motion_mail'),
+        'SET_ALMOS': partial(_set_alarm_param, driver="GV8", param='motion_sensitivity'),
+        'SET_ALMOC': partial(_set_alarm_param, driver="GV9", param='motion_compensation'),
         'SET_POS':   _goto_preset,
     }
     # The nodeDef id of this camers.
