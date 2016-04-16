@@ -20,6 +20,7 @@ from foscam_poll import foscam_poll
 from camera_nodes import *
 from camera_funcs import myint,long2ip
 
+# CameraServer version number
 CAMERA_SERVER_VERSION = 0.1
 
 class CameraServer(Node):
@@ -35,7 +36,6 @@ class CameraServer(Node):
         self.num_cams   = 0
         self.debug_mode = 2
         self.foscam_mjpeg = 1
-        # Our version number
         super(CameraServer, self).__init__(parent, self.address, self.name, True, manifest)
         self._add_manifest_cams(manifest)
         self.query();
@@ -48,7 +48,7 @@ class CameraServer(Node):
             self.parent.logger.debug("CameraServer:add_manifest_cams: address=%s data=%s" % (address,data))
             drivers = data['drivers']
             if data['node_def_id'] == 'FoscamMJPEG':
-                FoscamMJPEG(self.parent, True, long2ip(drivers['GV2']), drivers['GV3'], "polyglot", "poly*glot", manifest, data['name'], address)
+                FoscamMJPEG(self.parent, True, long2ip(drivers['GV2']), drivers['GV3'], self.parent.cam_config['user'], self.parent.cam_config['password'], manifest, data['name'], address)
                 self.num_cams += 1
         
     def query(self, **kwargs):

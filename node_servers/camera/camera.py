@@ -13,16 +13,14 @@ except ImportError:
     from http.client import BadStatusLine  # Python 3.x
 from polyglot.nodeserver_api import SimpleNodeServer, PolyglotConnector
 from collections import defaultdict, OrderedDict
-import os, json, logging, requests, threading, SocketServer, re, socket
+import os, json, logging, requests, threading, SocketServer, re, socket, yaml
 from requests.auth import HTTPDigestAuth,HTTPBasicAuth
 # Is there a better way to import these?  I'd rather import just this:
 import camera_nodes
 # And have all camera_nodes defined at the current level?  But have to import them all?
 from camera_nodes import CameraServer
-from logger import setup_log
 
 global _REST_HANDLER
-    
 
 class CameraNodeServer(SimpleNodeServer):
     """ ISY Helper Camera Node Server """
@@ -30,10 +28,12 @@ class CameraNodeServer(SimpleNodeServer):
     
     def setup(self):
         """ Initial node setup. """
-        self.logger = setup_log(self.poly.sandbox,self.poly.name)
+        super(SimpleNodeServer, self).setup()
         self.logger.info('CameraNodeServer starting up.')
         self.logger.info("CameraNodeServer: Sandbox=%s" % (self.poly.sandbox))
         self.logger.info("CameraNodeServer: Config=%s" % (self.config))
+        # Setup the config data.
+        #self.get_cam_config()
         # define nodes for settings
         # Start a simple server for cameras to ping
         self.server = start_server(self)
@@ -42,6 +42,42 @@ class CameraNodeServer(SimpleNodeServer):
         CameraServer(self, "cams", "Camera Server", self.manifest)
         self.update_config()
 
+    def get_cam_config(self):
+        # The config file.
+        self.config_file = self.poly.sandbox + "/config.yaml"
+        # Default configuration paramaters.
+        default_config = dict(
+            user = 'YourCameraUserName',
+            password = 'YourCameraPassword'
+        )
+        if not os.path.isfile(self.config_file):
+            with open(self.config_file, 'w') as outfile:
+                outfile.write( yaml.dump(default_config, default_flow_style=False) )
+                msg = 'Created default config file, please edit and set the proper values "%s"' % (self.config_file)
+                self.logger.error(msg)
+                raise IOError(msg)
+        try:
+            config_h = open(self.config_file, 'r')
+        except IOError as e:
+            # Does not exist OR no read permissions, so show error in both logs.
+            msg = 'Error Unable to open config file "%s"' % (self.config_file)
+            self.logger.error(msg)
+            raise IOError(msg)
+        # TODO: Ok to just let load errors throw an exception?
+        self.cam_config = yaml.load(config_h)
+        config_h.close
+        # Check that user and password are defined.
+        errors = 0
+        for param in ('user', 'password'):
+            if not param in self.cam_config:
+                self.logger.error("%s not defined in %s" % (param,self.config_file))
+                errors += 1
+            elif self.cam_config[param] is None:
+                self.logger.error("%s is %s in %s" % (param,self.cam_config[param],self.config_file))
+                errors += 1
+        if errors > 0:
+            raise ValueError('Error in config file "%s", see log "%s"' % (self.config_file, self.poly.log_filename))
+        
     def connect(self):
         """ TODO: Connect to Camera to get it's name """
         # pylint: disable=broad-except
@@ -81,7 +117,7 @@ class CameraNodeServer(SimpleNodeServer):
     
     def http_get(self,ip,port,user,password,path,payload):
         url = "http://{}:{}/{}".format(ip,port,path)
-        self.logger.debug("Sending: %s %s" % (url, payload) )
+        self.logger.debug("http_get: Sending: %s %s" % (url, payload) )
         auth = HTTPDigestAuth(user,password)
         try:
             response = requests.get(
@@ -91,10 +127,11 @@ class CameraNodeServer(SimpleNodeServer):
                 timeout=10
             )
         except requests.exceptions.Timeout:
-            self.send_error("Connection to the helper timed out")
+            self.send_error("Connection timed out")
             return False
-        self.logger.debug("Got: %s", response.status_code)
+        self.logger.debug("http_get: Got: code=%s", response.status_code)
         if response.status_code == 200:
+            #self.logger.debug("http_get: Got: text=%s", response.text)
             return response.text
         elif response.status_code == 400:
             self.send_error("Bad request: %s" % (url) )

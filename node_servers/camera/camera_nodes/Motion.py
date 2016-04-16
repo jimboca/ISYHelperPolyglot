@@ -20,7 +20,7 @@ class Motion(Node):
         self.primary._get_status()
         # TODO: Should report only be true if it changes?
         self.set_driver('ST', self.primary.status['alarm_status'], report=True)
-        self.parent.logger.info("Motion:query:done: '%s'" % (self.name))
+        self.parent.logger.info("Motion:query:done: '%s' ST=%s" % (self.name,self.primary.status['alarm_status']))
         return True
 
     def motion(self, value):
