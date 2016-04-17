@@ -9,7 +9,7 @@
    </editor>
 
    <editor id="BOOL">
-       <range uom="2" subset="0,1" nls="B_TF"/>
+       <range uom="2" subset="0,1"/>
    </editor>
 
    <editor id="FLOAT">
@@ -23,6 +23,21 @@
     <!-- 16 Position Selector -->
     <editor id="I_POS16">
         <range uom="25" subset="1-16" nls="CPOS" />
+    </editor>
+
+    <!-- 0-2 Mode (M12O=Mode 0, 1, Off) cause I don't know what 0 and 1 are -->
+    <editor id="I_M01O">
+        <range uom="25" subset="0-2" nls="M01O" />
+    </editor>
+
+    <!-- 0-2 Mode (MOOA=Mode Off On Auto-->
+    <editor id="I_MOOA">
+        <range uom="25" subset="0-2" nls="MOOA" />
+    </editor>
+
+    <!-- 0-2 IR Mode (MOO=Mode Off On-->
+    <editor id="I_MOO">
+        <range uom="25" subset="0-1" nls="MOO" />
     </editor>
 
     <!-- 0-9 Motion Sensitivity -->

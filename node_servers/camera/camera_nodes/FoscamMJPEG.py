@@ -59,9 +59,10 @@ class FoscamMJPEG(Node):
         # pylint: disable=unused-argument
         self.parent.logger.info("FoscamMJPEG:query:start: camera '%s'" % (self.name))
         self._get_params();
+        # Set GV4 Responding
         self.set_driver('GV4', self.connected, report=False)
-        self.set_driver('GV5', self.connected, report=False)
         if self.params:
+            self.set_driver('GV5', self.params['led_mode'], report=False) # ,uom=int, report=False ?
             self.set_driver('GV6', self.params['alarm_motion_armed'], report=False) # ,uom=int, report=False ?
             self.set_driver('GV7', self.params['alarm_mail'], report=False)
             self.set_driver('GV8', self.params['alarm_motion_sensitivity'], report=False)
@@ -89,12 +90,14 @@ class FoscamMJPEG(Node):
         return ret
     
     def _get_params(self):
-        """ Call get_params on the camera and store in params """
+        """ Call get_params and get_misc on the camera and store in params """
         self.params = self._http_get_and_parse("get_params.cgi")
         if self.params:
             self.connected = 1
         else:
             self.connected = 0
+        misc = self._http_get_and_parse("get_misc.cgi")
+        self.params['led_mode'] = misc['led_mode']
 
     def poll(self):
         """ Nothing to poll?  """
@@ -107,14 +110,19 @@ class FoscamMJPEG(Node):
         if self.status:
             connected = 1
         if connected != self.connected:
-            self.set_driver('GV3', connected, report=True)
             self.set_driver('GV4', connected, report=True)
     
     def _set_alarm_params(self,params):
         """ 
-        Set the sepecified params on the camera
+        Set the sepecified alarm params on the camera
         """
         return self._http_get("set_alarm.cgi",params)
+
+    def _set_misc_params(self,params):
+        """ 
+        Set the sepecified misc params on the camera
+        """
+        return self._http_get("set_misc.cgi",params)
 
     def _decoder_control(self,params):
         """ 
@@ -142,9 +150,41 @@ class FoscamMJPEG(Node):
         if not self._set_alarm_params({ param: int(value)}):
             self.parent.send_error("_set_alarm_param failed to set %s=%s" % (param,value) )
         # TODO: Dont' think I should be setting the driver?
-        self.set_driver(driver, value, report=True)
+        self.set_driver(driver, myinto(value), 56)
         # The set_alarm param is without the '_alarm' prefix
-        self.params['alarm_'+param] = int(value)
+        self.params['alarm_'+param] = myint(value)
+        return True
+
+    def _set_misc_param(self, driver=None, param=None, **kwargs):
+        value = kwargs.get("value")
+        if value is None:
+            self.parent.send_error("_set_misc_param not passed a value for driver %s: %s" % (driver, value) )
+            return False
+        # TODO: Should use the _driver specified function instead of int.
+        if not self._set_misc_params({ param: int(value)}):
+            self.parent.send_error("_set_misc_param failed to set %s=%s" % (param,value) )
+        # TODO: Dont' think I should be setting the driver?
+        self.set_driver(driver, myint(value), 56)
+        # The set_misc param
+        self.params[param] = myint(value)
+        return True
+
+    def _reboot(self, **kwargs):
+        """ Reboot the Camera """
+        return self._http_get("reboot.cgi",{})
+
+    def _set_irled(self, **kwargs):
+        """ Set the irled off=94 on=95 """
+        value = kwargs.get("value")
+        if value is None:
+            self.parent.send_error("_set_irled not passed a value: %s" % (value) )
+            return False
+        if value == 0:
+            dvalue = 94
+        else:
+            dvalue = 95
+        if not self._decoder_control( { 'command': dvalue} ):
+            self.parent.send_error("_goto_preset failed to set %s" % (dvalue) )
         return True
 
     def _goto_preset(self, **kwargs):
@@ -170,10 +210,10 @@ class FoscamMJPEG(Node):
         'GV1': [0, 56, myfloat],
         'GV2': [0, 56, myint],
         'GV3': [0, 56, myint],
-        'GV4': [0, 56, myint],
+        'GV4': [0, 2, myint],
         'GV5': [0, 56, myint],
-        'GV6': [0, 56, myint],
-        'GV7': [0, 56, myint],
+        'GV6': [0, 2, myint],
+        'GV7': [0, 2, myint],
         'GV8': [0, 56, myint],
         'GV9': [0, 56, myint],
     }
@@ -182,7 +222,7 @@ class FoscamMJPEG(Node):
     GV2:  integer: IP Address
     GV3:  integer: Port
     GV4:  integer: Responding
-    GV5:  integer: Connected
+    GV5:  integer: LED Mode
     GV6:  integer: Alarm Motion Armed
     GV7:  integer: Alarm Send Mail
     GV8:  integer: Motion Sensitivity
@@ -190,11 +230,14 @@ class FoscamMJPEG(Node):
     """
     _commands = {
         'QUERY': query,
+        'SET_IRLED': _set_irled,
+        'SET_LEDM':  partial(_set_misc_param,  driver="GV5", param='led_mode'),
         'SET_ALMOA': partial(_set_alarm_param, driver="GV6", param='motion_armed'),
         'SET_ALML':  partial(_set_alarm_param, driver="GV7", param='motion_mail'),
         'SET_ALMOS': partial(_set_alarm_param, driver="GV8", param='motion_sensitivity'),
         'SET_ALMOC': partial(_set_alarm_param, driver="GV9", param='motion_compensation'),
         'SET_POS':   _goto_preset,
+        'REBOOT':    _reboot,
     }
     # The nodeDef id of this camers.
     node_def_id = 'FoscamMJPEG'

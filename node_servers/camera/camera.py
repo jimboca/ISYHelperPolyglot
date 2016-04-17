@@ -33,7 +33,7 @@ class CameraNodeServer(SimpleNodeServer):
         self.logger.info("CameraNodeServer: Sandbox=%s" % (self.poly.sandbox))
         self.logger.info("CameraNodeServer: Config=%s" % (self.config))
         # Setup the config data.
-        #self.get_cam_config()
+        self.get_cam_config()
         # define nodes for settings
         # Start a simple server for cameras to ping
         self.server = start_server(self)
