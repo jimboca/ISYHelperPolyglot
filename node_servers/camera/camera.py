@@ -43,6 +43,11 @@ class CameraNodeServer(SimpleNodeServer):
         self.update_config()
 
     def get_cam_config(self):
+        """
+        Read the sandbox/config.yaml.
+        If it does not exist, create a blank template
+        Make sure necessary settings are set
+        """
         # The config file.
         self.config_file = self.poly.sandbox + "/config.yaml"
         # Default configuration paramaters.
@@ -78,20 +83,10 @@ class CameraNodeServer(SimpleNodeServer):
         if errors > 0:
             raise ValueError('Error in config file "%s", see log "%s"' % (self.config_file, self.poly.log_filename))
         
-    def connect(self):
-        """ TODO: Connect to Camera to get it's name """
-        # pylint: disable=broad-except
-        return True
-
     def poll(self):
         """ Poll Camera's  """
         for node_addr, node in self.nodes.items():
             node.poll()
-        return True
-
-    def query_node(self, address):
-        # This is never called, only if child node calls it?
-        self.send_error("In camera query_node?");
         return True
 
     def long_poll(self):
@@ -108,7 +103,7 @@ class CameraNodeServer(SimpleNodeServer):
         
     def motion(self,address,value):
         """ Poll Camera's  """
-        self.logger.info("Got Motion for %s or %s" % (address, value) )
+        self.logger.info("Got Motion for node %s '%s'" % (address, value) )
         if address in self.nodes:
             return self.nodes[address].motion(value)
         else:

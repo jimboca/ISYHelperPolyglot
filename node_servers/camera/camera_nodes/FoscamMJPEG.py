@@ -24,7 +24,7 @@ class FoscamMJPEG(Node):
         self.user        = user
         self.password    = password
         self.connected   = 0
-        self.parent.logger.info("FoscamMJPEG: Adding %s:%s" % (self.ip,self.port))
+        self.parent.logger.info("FoscamMJPEG:init: Adding %s:%s" % (self.ip,self.port))
         #
         # Get status which contains the camera id and alias, and we need it to add Motion node.
         self._get_status()
@@ -38,9 +38,9 @@ class FoscamMJPEG(Node):
         address = address.lower()
         # Add the Camera
         super(FoscamMJPEG, self).__init__(parent, address, name, primary, manifest)
-        self.set_driver('GV1', VERSION, report=False)
-        self.set_driver('GV2', ip2long(ip_address), report=False)
-        self.set_driver('GV3', port, report=False)
+        self.set_driver('GV1', VERSION, uom=56, report=False)
+        self.set_driver('GV2', ip2long(ip_address), uom=56, report=False)
+        self.set_driver('GV3', port, uom=56, report=False)
         self._get_params();
         # Add my motion node.
         self.motion = Motion(parent, self, manifest)
@@ -52,23 +52,23 @@ class FoscamMJPEG(Node):
         });
         # Call query to pull in the params.
         self.query();
-        self.parent.logger.info("FoscamMJPEG: Added camera at %s:%s '%s' %s" % (self.ip,self.port,name,address))
+        self.parent.logger.info("FoscamMJPEG:init: Added camera at %s:%s '%s' %s" % (self.ip,self.port,name,address))
 
     def query(self, **kwargs):
         """ query the camera """
         # pylint: disable=unused-argument
-        self.parent.logger.info("FoscamMJPEG:query:start: camera '%s'" % (self.name))
+        self.parent.logger.info("FoscamMJPEG:query:start:%s" % (self.name))
         self._get_params();
         # Set GV4 Responding
-        self.set_driver('GV4', self.connected, report=False)
+        self.set_driver('GV4', self.connected, uom=2, report=False)
         if self.params:
-            self.set_driver('GV5', self.params['led_mode'], report=False) # ,uom=int, report=False ?
-            self.set_driver('GV6', self.params['alarm_motion_armed'], report=False) # ,uom=int, report=False ?
-            self.set_driver('GV7', self.params['alarm_mail'], report=False)
-            self.set_driver('GV8', self.params['alarm_motion_sensitivity'], report=False)
-            self.set_driver('GV9', self.params['alarm_motion_compensation'], report=False)
+            self.set_driver('GV5', self.params['led_mode'], uom=25, report=False) # ,uom=int, report=False ?
+            self.set_driver('GV6', self.params['alarm_motion_armed'], uom=2, report=False) # ,uom=int, report=False ?
+            self.set_driver('GV7', self.params['alarm_mail'], uom=2, report=False)
+            self.set_driver('GV8', self.params['alarm_motion_sensitivity'], uom=25, report=False)
+            self.set_driver('GV9', self.params['alarm_motion_compensation'], uom=2, report=False)
         self.report_driver()
-        self.parent.logger.info("FoscamMJPEG:query:done: camera '%s'" % (self.name))
+        self.parent.logger.info("FoscamMJPEG:query:done:%s" % (self.name))
         return True
 
     def _http_get(self, path, payload = {}):
@@ -105,6 +105,7 @@ class FoscamMJPEG(Node):
         return
 
     def long_poll(self):
+        self.parent.logger.info("FoscamMJPEG:long_poll:%s:" % (self.name))
         self._get_status()
         connected = 0
         if self.status:
@@ -116,24 +117,30 @@ class FoscamMJPEG(Node):
         """ 
         Set the sepecified alarm params on the camera
         """
+        self.parent.logger.info("FoscamMJPEG:set_alarm_params:%s: %s" % (self.name,params))
         return self._http_get("set_alarm.cgi",params)
 
     def _set_misc_params(self,params):
         """ 
         Set the sepecified misc params on the camera
         """
+        self.parent.logger.info("FoscamMJPEG:set_misc_params:%s: %s" % (self.name,params))
         return self._http_get("set_misc.cgi",params)
 
     def _decoder_control(self,params):
         """ 
         Pass in decoder command
         """
+        self.parent.logger.info("FoscamMJPEG:set_decoder_control:%s: %s" % (self.name,params))
         return self._http_get("decoder_control.cgi",params)
 
     def _get_status(self,report=True):
         """ 
         Call get_status on the camera and store in status
         """
+        # Can't spit out the device name cause we might not know it yet.
+        self.parent.logger.info("FoscamMJPEG:get_status: %s:%s" % (self.ip,self.port))
+        # Get the status
         self.status = self._http_get_and_parse("get_status.cgi")
         if self.status:
             self.connected = 1
@@ -150,7 +157,7 @@ class FoscamMJPEG(Node):
         if not self._set_alarm_params({ param: int(value)}):
             self.parent.send_error("_set_alarm_param failed to set %s=%s" % (param,value) )
         # TODO: Dont' think I should be setting the driver?
-        self.set_driver(driver, myinto(value), 56)
+        self.set_driver(driver, myint(value), 56)
         # The set_alarm param is without the '_alarm' prefix
         self.params['alarm_'+param] = myint(value)
         return True
@@ -184,7 +191,7 @@ class FoscamMJPEG(Node):
         else:
             dvalue = 95
         if not self._decoder_control( { 'command': dvalue} ):
-            self.parent.send_error("_goto_preset failed to set %s" % (dvalue) )
+            self.parent.send_error("_set_irled failed to set %s" % (dvalue) )
         return True
 
     def _goto_preset(self, **kwargs):
@@ -210,19 +217,19 @@ class FoscamMJPEG(Node):
         'GV1': [0, 56, myfloat],
         'GV2': [0, 56, myint],
         'GV3': [0, 56, myint],
-        'GV4': [0, 2, myint],
-        'GV5': [0, 56, myint],
-        'GV6': [0, 2, myint],
-        'GV7': [0, 2, myint],
-        'GV8': [0, 56, myint],
-        'GV9': [0, 56, myint],
+        'GV4': [0, 2,  myint],
+        'GV5': [0, 25, myint],
+        'GV6': [0, 2,  myint],
+        'GV7': [0, 2,  myint],
+        'GV8': [0, 25, myint],
+        'GV9': [0, 2,  myint],
     }
     """ Driver Details:
     GV1:  float:   Version of this code.
-    GV2:  integer: IP Address
+    GV2:  unsigned integer: IP Address
     GV3:  integer: Port
     GV4:  integer: Responding
-    GV5:  integer: LED Mode
+    GV5:  integer: Network LED Mode
     GV6:  integer: Alarm Motion Armed
     GV7:  integer: Alarm Send Mail
     GV8:  integer: Motion Sensitivity

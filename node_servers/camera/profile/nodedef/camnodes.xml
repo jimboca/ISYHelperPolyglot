@@ -34,11 +34,11 @@
       <st id="GV2" editor="I_INTEGER" />
       <st id="GV3" editor="I_INTEGER" />
       <st id="GV4" editor="BOOL" />
-      <st id="GV5" editor="I_MOOA" />
+      <st id="GV5" editor="I_NLEDM" />
       <st id="GV6" editor="BOOL" />
       <st id="GV7" editor="BOOL" />
-      <st id="GV8" editor="I_ALMOS" />
       <st id="GV9" editor="BOOL" />
+      <st id="GV8" editor="I_ALMOS" />
     </sts>
     <cmds>
       <sends />
@@ -49,7 +49,7 @@
         </cmd>
 	<!--  The Network LED flasshing -->
         <cmd id="SET_LEDM">
-          <p id="" editor="I_M01O" init="GV5" />
+          <p id="" editor="I_NLEDM" init="GV5" />
         </cmd>
 	<!--  Enable motion alarm -->
         <cmd id="SET_ALMOA">
@@ -59,15 +59,15 @@
         <cmd id="SET_ALML">
           <p id="" editor="BOOL" init="GV7" />
         </cmd>
-	<!--  Motion Sensitivity: 0-9：high-low (but I think it is low-high) -->
-        <cmd id="SET_ALMOS">
-          <p id="" editor="I_ALMOS" init="GV8" />
-        </cmd>
 	<!-- Enable alarm motion compensation or not when the light changes suddently，0：no，1：yes  -->
         <cmd id="SET_ALMOC">
           <p id="" editor="BOOL" init="GV9" />
         </cmd>
-	<!--   -->
+	<!-- Motion Sensitivity: 0-9：high-low (but I think it is low-high) -->
+        <cmd id="SET_ALMOS">
+          <p id="" editor="I_ALMOS" init="GV8" />
+        </cmd>
+	<!-- Set camera position to one of 16 presets -->
         <cmd id="SET_POS">
           <p id="" editor="I_POS16" />
         </cmd>

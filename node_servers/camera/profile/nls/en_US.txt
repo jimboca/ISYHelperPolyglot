@@ -59,33 +59,33 @@ CMD-CAM-SET_POS-NAME = Set Position
 #CMDP-CAM-BOOL-GV9-NAME = Compensation
 #CMDP-CAM-
 
-CPOS-1 = Position 1
-CPOS-2 = Position 2
-CPOS-3 = Position 3
-CPOS-4 = Position 4
-CPOS-5 = Position 5
-CPOS-6 = Position 6
-CPOS-7 = Position 7
-CPOS-8 = Position 8
-CPOS-9 = Position 9
-CPOS-10 = Position 10
-CPOS-11 = Position 11
-CPOS-12 = Position 12
-CPOS-13 = Position 13
-CPOS-14 = Position 14
-CPOS-15 = Position 15
-CPOS-16 = Position 16
+POS-1 = Preset 1
+POS-2 = Preset 2
+POS-3 = Preset 3
+POS-4 = Preset 4
+POS-5 = Preset 5
+POS-6 = Preset 6
+POS-7 = Preset 7
+POS-8 = Preset 8
+POS-9 = Preset 9
+POS-10 = Preset 10
+POS-11 = Preset 11
+POS-12 = Preset 12
+POS-13 = Preset 13
+POS-14 = Preset 14
+POS-15 = Preset 15
+POS-16 = Preset 16
 
-CMOS-0 = Sensitivity 0 (Highest)
-CMOS-1 = Sensitivity 1
-CMOS-2 = Sensitivity 2
-CMOS-3 = Sensitivity 3
-CMOS-4 = Sensitivity 4
-CMOS-5 = Sensitivity 5
-CMOS-6 = Sensitivity 6
-CMOS-7 = Sensitivity 7
-CMOS-8 = Sensitivity 8
-CMOS-9 = Sensitivity 9 (Lowest)
+ALMOS-0 = Sensitivity 0 (Highest)
+ALMOS-1 = Sensitivity 1
+ALMOS-2 = Sensitivity 2
+ALMOS-3 = Sensitivity 3
+ALMOS-4 = Sensitivity 4
+ALMOS-5 = Sensitivity 5
+ALMOS-6 = Sensitivity 6
+ALMOS-7 = Sensitivity 7
+ALMOS-8 = Sensitivity 8
+ALMOS-9 = Sensitivity 9 (Lowest)
 
 MOO-0 = Off
 MOO-1 = On
@@ -98,9 +98,9 @@ MOOA-2 = Auto
 # led_mode for the network led on the back of the camera.
 # It is 0 (zero) 1 (one) O (Letter O=Off)
 # Cause I don't know what zero and one indicate.
-M01O-0 = 0
-M01O-1 = 1
-M01O-2 = Off
+NLEDM-0 = Mode 0
+NLEDM-1 = Mode 1
+NLEDM-2 = Off
 
 # Camera sub nodes.
 ND-CamMotion-NAME = Camera Motion Sensor
