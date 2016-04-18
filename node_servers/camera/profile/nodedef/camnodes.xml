@@ -6,8 +6,8 @@
     <sts>
       <st id="GV1" editor="FLOAT" />
       <st id="GV2" editor="I_INTEGER" />
-      <st id="GV3" editor="I_INTEGER" />
-      <st id="GV4" editor="I_INTEGER" />
+      <st id="GV3" editor="I_FOSCAM_MJPEG" />
+      <st id="GV4" editor="I_DM" />
     </sts>
     <cmds>
       <sends />
@@ -20,7 +20,7 @@
         </cmd>
 	<!--  Log Debug Mode -->
         <cmd id="SET_DM">
-          <p id="" editor="I_DM" init="GV4" />
+          <p id="" editor="I_DM" init="GV4"/>
         </cmd>
       </accepts>
     </cmds>

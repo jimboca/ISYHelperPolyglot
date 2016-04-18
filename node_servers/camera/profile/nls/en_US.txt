@@ -15,11 +15,12 @@ CFMJPEG-3 = 30s Query
 CFMJPEG-4 = 60s Query
 
 CMD-SET_DM-NAME = Debug
-CDM-0 = Off
-CDM-1 = Error
-CDM-2 = Warning
-CDM-3 = Info
-CDM-4 = Debug
+CDM-0 = All
+CDM-10 = Debug
+CDM-20 = Info
+CDM-30 = Warning
+CDM-40 = Error
+CDM-50 = Critical
 
 CMD-DISCOVER-NAME = Discover
 

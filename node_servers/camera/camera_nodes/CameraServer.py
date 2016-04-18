@@ -53,11 +53,11 @@ class CameraServer(Node):
         
     def query(self, **kwargs):
         """ Look for cameras """
-        self.parent.logger.debug("CameraServer:query:start")
+        self.parent.logger.info("CameraServer:query:")
         self.set_driver('GV1', CAMERA_SERVER_VERSION, report=False)
-        self.set_driver('GV2', self.num_cams, report=False)
-        self.set_driver('GV3', self.foscam_mjpeg, report=False)
-        self.set_driver('GV4', self.debug_mode, report=False)
+        self.set_driver('GV2', self.num_cams, uom=56, report=False)
+        self.set_driver('GV3', self.foscam_mjpeg, uom=25, report=False)
+        self.set_driver('GV4', self.debug_mode, uom=25, report=False)
         self.report_driver()
         self.parent.logger.debug("CameraServer:query:done")
         return True
@@ -69,7 +69,7 @@ class CameraServer(Node):
             self._discover_foscam_m(manifest)
         else:
             self.parent.logger.info("CameraServer: Not Polling for Foscam MJPEG cameras %s" % (self.foscam_mjpeg))
-            self.set_driver('GV2', self.num_cams, report=True)
+            self.set_driver('GV2', self.num_cams, uom=56, report=True)
         self.parent.logger.info("CameraServer: Done adding cameras")
         self.parent.update_config()
         return True
@@ -85,7 +85,7 @@ class CameraServer(Node):
             if not lnode:
                 FoscamMJPEG(self.parent, True, cam['ip'], cam['port'], "polyglot", "poly*glot", self.manifest, cam['name'], cam['id'])
                 self.num_cams += 1
-                self.set_driver('GV2', self.num_cams, report=True)
+                self.set_driver('GV2', self.num_cams, uom=56, report=True)
         
     def poll(self):
         """ Poll TODO: Ping the camera?  """
@@ -101,25 +101,27 @@ class CameraServer(Node):
         """
         self.foscam_mjpeg = kwargs.get("value")
         self.parent.logger.info("CameraServer: Foscam Polling set to %s" % (self.foscam_mjpeg))
-        self.set_driver('GV3', self.foscam_mjpeg, report=True)
+        self.set_driver('GV3', self.foscam_mjpeg, uom=25, report=True)
         return True
     
     def _set_debug_mode(self, **kwargs):
         """ Enable/Disable Foscam MJPEG UDP Searching
-              0 = Off
-              1 = Error
-              2 = Warning
-              3 = Info
-              4 = Debug
+              0  = All
+              10 = Debug
+              20 = Info
+              30 = Warning
+              40 = Error
+              50 = Critical
         """
-        self.debug_mode = kwargs.get("value")
-        self.parent.logger.info("CameraServer: Debug set to %s" % (self.debug_mode))
-        self.set_driver('GV4', self.debug_mode, report=True)
+        self.debug_mode = myint(kwargs.get("value"))
+        self.parent.logger.info("CameraServer:set_debug_mode: %d" % (self.debug_mode))
+        self.set_driver('GV4', self.debug_mode, uom=25, report=True)
+        self.logger.setLevel(self.debug_mode)
         return True
     
     _drivers = {
         'GV1': [0, 56, float],
-        'GV2': [0, 25, myint],
+        'GV2': [0, 56, myint],
         'GV3': [0, 25, myint],
         'GV4': [0, 25, myint],
     }

@@ -22,7 +22,7 @@
 
     <!-- 16 Position Selector -->
     <editor id="I_POS16">
-        <range uom="25" subset="1-16" nls="POS16" />
+        <range uom="25" subset="1-16" nls="POS" />
     </editor>
 
     <!-- 0-2 Mode (M12O=Mode 0, 1, Off) cause I don't know what 0 and 1 are -->
@@ -52,7 +52,7 @@
 
     <!-- 0-4 Log Debug Mode -->
     <editor id="I_DM">
-        <range uom="25" subset="0-4" nls="CDM" />
+        <range uom="25" subset="0,10,20,30,40,50" nls="CDM" />
     </editor>
 
 </editors>
